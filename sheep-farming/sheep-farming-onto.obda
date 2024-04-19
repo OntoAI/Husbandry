@@ -1,0 +1,40 @@
+[PrefixDeclaration]
+:		http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/
+dc:		http://purl.org/dc/elements/1.1/
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+obda:		https://w3id.org/obda/vocabulary#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+swrl:		http://www.w3.org/2003/11/swrl#
+swrla:		http://swrl.stanford.edu/ontologies/3.3/swrla.owl#
+swrlb:		http://www.w3.org/2003/11/swrlb#
+
+[MappingDeclaration] @collection [[
+mappingId	SheepLocation-mapping
+target		:sheep_{eartagid} a :Sheep ; :hasSheepEartagID {eartagid}^^xsd:string ; :hasSheepPenID {sheeppenid}^^xsd:string ; :hasSheepBarnID {sheepbarnid}^^xsd:string . 
+source		SELECT eartagid, sheeppenid, sheepbarnid
+			from sheep;
+
+mappingId	SheepPen-mapping
+target		:sheeppen_{sheeppenid} :hasSheepPenID {sheeppenid}^^xsd:string . 
+source		SELECT sheeppenid, sheepbarnid
+			from sheeppen;
+
+mappingId	SheepBarn-mapping
+target		:sheepbarn_{sheepbarnid} a :SheepBarn ; :hasSheepBarnID {sheepbarnid}^^xsd:string . 
+source		SELECT sheepbarnid, sheepfarmid
+			FROM sheepbarn;
+
+mappingId	Sheepfarm-mapping
+target		:sheepfarm_{sheepfarmid} a :Sheepfarm ; :hasSheepfarmID {sheepfarmid}^^xsd:string . 
+source		SELECT sheepfarmid
+			FROM sheepfarm;
+
+mappingId	Process-mapping
+target		:process_{processid} a :Process ; :hasProcessID {processid}^^xsd:string ; :hasProcessName {processname}^^xsd:string ; :hasProcessDescription {processdescription} ; :hasParentProcessID {parentprocessid} . 
+source		SELECT *
+			FROM process;
+]]
+

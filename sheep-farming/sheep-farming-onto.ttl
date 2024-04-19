@@ -1,0 +1,2967 @@
+@prefix : <http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix obda: <https://w3id.org/obda/vocabulary#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix swrla: <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#> .
+@prefix swrlb: <http://www.w3.org/2003/11/swrlb#> .
+@base <http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/> .
+
+<http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto> rdf:type owl:Ontology ;
+                                                                          rdfs:comment "Sheep farming management ontology"@en ,
+                                                                                       "羊场管理本体模型"@zh ;
+                                                                          rdfs:isDefinedBy "Ray Tan"@en ;
+                                                                          owl:versionInfo "0.2"@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/creator
+dc:creator rdf:type owl:AnnotationProperty .
+
+
+###  http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled
+swrla:isRuleEnabled rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/IndividualFeedComponent
+:IndividualFeedComponent rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#time
+xsd:time rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SheepBarnContains
+:SheepBarnContains rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :SheepfarmContains ,
+                                      :contains ;
+                   owl:inverseOf :sheepInhabitsSheepBarn ;
+                   rdfs:domain :SheepBarn ;
+                   rdfs:range :Sheep ;
+                   rdfs:comment "SheepBarn contains SheepPen Sheep"@en ;
+                   rdfs:label "sheepBarnContains"@en ,
+                              "栋舍容纳"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SheepfarmContains
+:SheepfarmContains rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :contains ;
+                   owl:inverseOf :sheepInhabitsSheepfarm ;
+                   rdfs:domain :Sheepfarm ;
+                   rdfs:range :Sheep ;
+                   rdfs:comment "Sheepfarm contains SheepBarn SheepPen Sheep"@en ;
+                   rdfs:label "sheepfarmContains"@en ,
+                              "羊场容纳"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/contains
+:contains rdf:type owl:ObjectProperty ;
+          owl:inverseOf :inhabits ;
+          rdfs:comment "Sheepfarm contains SheepBarn contains SheepPen contains Sheeps"@en ;
+          rdfs:label "contains"@en ,
+                     "容纳"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/eats
+:eats rdf:type owl:ObjectProperty ;
+      rdfs:domain :Sheep .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasBeginTime
+:hasBeginTime rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :hasTime ;
+              rdfs:range :Instant ;
+              rdfs:label "hasBeginTime"@en ,
+                         "开始时间"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasChildrenProcess
+:hasChildrenProcess rdf:type owl:ObjectProperty ;
+                    owl:inverseOf :hasParentProcess ;
+                    rdf:type owl:InverseFunctionalProperty ;
+                    rdfs:domain :Process ;
+                    rdfs:range :Process ;
+                    rdfs:comment "Parent process has children processes"@en ;
+                    rdfs:label "hasChildrenProcess"@en ,
+                               "包含子流程"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasDisease
+:hasDisease rdf:type owl:ObjectProperty ;
+            rdfs:domain [ rdf:type owl:Restriction ;
+                          owl:onProperty owl:topObjectProperty ;
+                          owl:someValuesFrom :Sheep
+                        ] ;
+            rdfs:range [ rdf:type owl:Restriction ;
+                         owl:onProperty owl:topObjectProperty ;
+                         owl:someValuesFrom :Disease
+                       ] ;
+            rdfs:comment "Sheep has disease relationship"@en ;
+            rdfs:label "hasDisease"@en ,
+                       "患有"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasDuration
+:hasDuration rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :hasTime ;
+             rdfs:range [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasDuration ;
+                          owl:someValuesFrom :interval
+                        ] .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasEndLocation
+:hasEndLocation rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf :hasLocation ;
+                rdfs:domain :Event ;
+                rdfs:range :Location ;
+                rdfs:label "hasEndLocation"@en ,
+                           "结束地点"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasEndTime
+:hasEndTime rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf :hasTime ;
+            rdfs:range :Instant ;
+            rdfs:label "hasEndTime"@en ,
+                       "结束时间"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasFeedMaterial
+:hasFeedMaterial rdf:type owl:ObjectProperty ;
+                 rdfs:domain :CombinedFeedRation ;
+                 rdfs:range :Supply ;
+                 rdfs:label "hasFeedMaterial"@en ,
+                            "包含饲料成分"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasFoodRation
+:hasFoodRation rdf:type owl:ObjectProperty ;
+               rdfs:domain :Sheep ;
+               rdfs:range :CombinedFeedRation .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasIndicativeSymptom
+:hasIndicativeSymptom rdf:type owl:ObjectProperty ;
+                      rdfs:subPropertyOf :hasSymptom ;
+                      rdfs:domain :Disease ;
+                      rdfs:range :Symptom .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasLocation
+:hasLocation rdf:type owl:ObjectProperty ;
+             rdfs:label "hasLocation"@en ,
+                        "具有地点"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasParentProcess
+:hasParentProcess rdf:type owl:ObjectProperty ,
+                           owl:InverseFunctionalProperty ;
+                  rdfs:comment "Process has parent process"@en ;
+                  rdfs:label "hasParentProcess"@en ,
+                             "具有母流程"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasReproductiveStatus
+:hasReproductiveStatus rdf:type owl:ObjectProperty ;
+                       rdfs:domain :Sheep ;
+                       rdfs:range :ReproductiveStatus .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasStartLocation
+:hasStartLocation rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :hasLocation ;
+                  rdfs:domain :Event ;
+                  rdfs:range :Location ;
+                  rdfs:label "hasHappenLocation"@en ,
+                             "发生地点"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSymptom
+:hasSymptom rdf:type owl:ObjectProperty ;
+            rdfs:domain :Sheep ;
+            rdfs:range :Symptom .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasTime
+:hasTime rdf:type owl:ObjectProperty ;
+         rdfs:domain :Event .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/inhabits
+:inhabits rdf:type owl:ObjectProperty ;
+          rdfs:comment "Sheep inhabits in Sheepfarm SheepBarn SheepPen"@en ;
+          rdfs:label "inhabits"@en ,
+                     "居住"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/isAfternoon
+:isAfternoon rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :hasTime ;
+             rdfs:range :interval ;
+             owl:propertyDisjointWith :isMorning .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/isMorning
+:isMorning rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :hasTime ;
+           rdfs:range :interval .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/isofType
+:isofType rdf:type owl:ObjectProperty ;
+          rdfs:domain :Sheep ;
+          rdfs:range :Sheep .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/sheepInhabits
+:sheepInhabits rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf :sheepInhabitsSheepBarn ;
+               owl:inverseOf :sheepPenContains ;
+               rdfs:domain :Sheep ;
+               rdfs:range :SheepPen ;
+               rdfs:comment "Sheep inhabits SheepPen"@en ;
+               rdfs:label "inhabitsSheepPen"@en ,
+                          "居住羊栏"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/sheepInhabitsSheepBarn
+:sheepInhabitsSheepBarn rdf:type owl:ObjectProperty ;
+                        rdfs:subPropertyOf :sheepInhabitsSheepfarm ;
+                        rdfs:domain :Sheep ;
+                        rdfs:range :SheepBarn ;
+                        rdfs:comment "Sheep inhabits in SheepPen"@en ;
+                        rdfs:label "inhabitsSheepBarn"@en ,
+                                   "居住羊舍"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/sheepInhabitsSheepfarm
+:sheepInhabitsSheepfarm rdf:type owl:ObjectProperty ;
+                        rdfs:subPropertyOf :inhabits ;
+                        rdfs:domain :Sheep ;
+                        rdfs:range :Sheepfarm ;
+                        rdfs:comment "Sheep inhabits in Sheepfarm"@en ;
+                        rdfs:label "inhabitsSheepfarm"@en ,
+                                   "居住羊场"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/sheepPenContains
+:sheepPenContains rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :SheepBarnContains ,
+                                     :SheepfarmContains ,
+                                     :contains ;
+                  rdfs:domain :SheepPen ;
+                  rdfs:range :Sheep ;
+                  rdfs:comment "sheepPen Contains Sheep"@en ;
+                  rdfs:label "sheepPenContains"@en ,
+                             "羊栏容纳"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/topdressConcentrate
+:topdressConcentrate rdf:type owl:ObjectProperty ;
+                     rdfs:range [ rdf:type owl:Restriction ;
+                                  owl:onProperty :topdressConcentrate ;
+                                  owl:someValuesFrom :Concentrate
+                                ] ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :topdressUntil ;
+                                  owl:someValuesFrom :ReproductiveStatus
+                                ] ;
+                     rdfs:comment "Top-dress Concentrates as suppliments to pragnant ewes"@en ;
+                     rdfs:label "topdressConcentrate"@en ,
+                                "补精料" .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/topdressUntil
+:topdressUntil rdf:type owl:ObjectProperty ;
+               rdfs:range [ rdf:type owl:Restriction ;
+                            owl:onProperty :topdressUntil ;
+                            owl:someValuesFrom :ReproductiveStatus
+                          ] .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/EartagEID
+:EartagEID rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf :hasEartagID ,
+                              :hasID ;
+           rdf:type owl:FunctionalProperty ;
+           rdfs:range xsd:string ;
+           owl:propertyDisjointWith :hasSheepEartagID ;
+           rdfs:comment "Eartag Electrical ID data property for Sheep"@en ;
+           rdfs:label "hasSheepEartagEID"@en ,
+                      "电子耳号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/FatherEartagID
+:FatherEartagID rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf :hasEartagID ,
+                                   :hasID ,
+                                   :hasSheepEartagID ;
+                rdf:type owl:FunctionalProperty ;
+                rdfs:domain :Sheep ;
+                rdfs:range xsd:string ;
+                owl:propertyDisjointWith :MotherEartagID ;
+                rdfs:comment "Father's Eartag ID data property for Sheep"@en ;
+                rdfs:label "hasFatherEartagID"@en ,
+                           "父亲耳号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/MotherEartagID
+:MotherEartagID rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf :hasEartagID ,
+                                   :hasID ,
+                                   :hasSheepEartagID ;
+                rdf:type owl:FunctionalProperty ;
+                rdfs:domain :Sheep ;
+                rdfs:range xsd:string ;
+                rdfs:comment "Mother's Eartag ID data type for Sheep"@en ;
+                rdfs:label "hasMotherEartagID"@en ,
+                           "母亲耳号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasAddress
+:hasAddress rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf owl:topDataProperty ;
+            rdfs:domain :Location ;
+            rdfs:range xsd:string ;
+            rdfs:comment "hasAddress data property"@en ;
+            rdfs:label "hasAddress"@en ,
+                       "地址"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasAlfalfaPercentage
+:hasAlfalfaPercentage rdf:type owl:DatatypeProperty ;
+                      rdfs:subPropertyOf :hasFeedMaterialPercentage ;
+                      rdfs:domain :CombinedFeedRation ;
+                      rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasAlfalfaQuantity
+:hasAlfalfaQuantity rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf :hasFeedMaterialQuantity ;
+                    rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasBakingSodaPercentage
+:hasBakingSodaPercentage rdf:type owl:DatatypeProperty ;
+                         rdfs:subPropertyOf :hasFeedMaterialPercentage ;
+                         rdfs:domain :CombinedFeedRation ;
+                         rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasBakingSodaQuantity
+:hasBakingSodaQuantity rdf:type owl:DatatypeProperty ;
+                       rdfs:subPropertyOf :hasFeedMaterialQuantity ;
+                       rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasConcentratePercentage
+:hasConcentratePercentage rdf:type owl:DatatypeProperty ;
+                          rdfs:subPropertyOf :hasFeedMaterialPercentage ;
+                          rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasConcentrateQuantity
+:hasConcentrateQuantity rdf:type owl:DatatypeProperty ;
+                        rdfs:subPropertyOf :hasFeedMaterialQuantity ;
+                        rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasCornStrawPercentage
+:hasCornStrawPercentage rdf:type owl:DatatypeProperty ;
+                        rdfs:subPropertyOf :hasFeedMaterialPercentage ;
+                        rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasCornStrawQuantity
+:hasCornStrawQuantity rdf:type owl:DatatypeProperty ;
+                      rdfs:subPropertyOf :hasFeedMaterialQuantity ;
+                      rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasEartagID
+:hasEartagID rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf :hasID ;
+             rdf:type owl:FunctionalProperty ;
+             rdfs:domain :Sheep ;
+             rdfs:range xsd:string ;
+             rdfs:comment "ID data property for Sheep"@en ;
+             rdfs:label "hasSheepID"@en ,
+                        "羊只标号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasEmployementStatus
+:hasEmployementStatus rdf:type owl:DatatypeProperty ;
+                      rdfs:subPropertyOf :hasStatus ;
+                      rdf:type owl:FunctionalProperty ;
+                      rdfs:domain :People ;
+                      rdfs:range xsd:string ;
+                      owl:propertyDisjointWith :hasSheepfarmStatus ;
+                      rdfs:comment "hasEmployementStatus data property for People"@en ;
+                      rdfs:label "hasEmployementStatus"@en ,
+                                 "工作状态"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasEventDescription
+:hasEventDescription rdf:type owl:DatatypeProperty ;
+                     rdfs:subPropertyOf :hasName ;
+                     rdfs:domain :Event ;
+                     rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasEventID
+:hasEventID rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf :hasID ;
+            rdf:type owl:FunctionalProperty ;
+            rdfs:domain :Event ;
+            rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasEventName
+:hasEventName rdf:type owl:DatatypeProperty ;
+              rdfs:subPropertyOf :hasName ;
+              rdfs:domain :Event ;
+              rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasFeedMaterialPercentage
+:hasFeedMaterialPercentage rdf:type owl:DatatypeProperty ;
+                           rdfs:subPropertyOf :hasPercentage .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasFeedMaterialQuantity
+:hasFeedMaterialQuantity rdf:type owl:DatatypeProperty ;
+                         rdfs:subPropertyOf :hasQuantity .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasFeedQuantityKg
+:hasFeedQuantityKg rdf:type owl:DatatypeProperty ;
+                   rdfs:subPropertyOf :hasQuantity ;
+                   rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasFeedQuantityg
+:hasFeedQuantityg rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf :hasQuantity ;
+                  rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasFeedingTime
+:hasFeedingTime rdf:type owl:DatatypeProperty ;
+                rdfs:domain :FeedingSchedule ;
+                rdfs:range xsd:time .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasID
+:hasID rdf:type owl:DatatypeProperty ,
+                owl:FunctionalProperty ;
+       rdfs:range xsd:string ;
+       rdfs:comment "Super data property for identification"@en .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasMoldInhibitorPercentage
+:hasMoldInhibitorPercentage rdf:type owl:DatatypeProperty ;
+                            rdfs:subPropertyOf :hasFeedMaterialPercentage ;
+                            rdfs:domain :CombinedFeedRation ;
+                            rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasMoldInhibitorQuantity
+:hasMoldInhibitorQuantity rdf:type owl:DatatypeProperty ;
+                          rdfs:subPropertyOf :hasFeedMaterialQuantity ;
+                          rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasName
+:hasName rdf:type owl:DatatypeProperty ;
+         rdfs:range xsd:string ;
+         rdfs:comment "Name data property"@en ;
+         rdfs:label "hasName"@en ,
+                    "名称"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasParentProcessID
+:hasParentProcessID rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf :hasID ,
+                                       :hasProcessID ;
+                    rdfs:domain :Process ;
+                    rdfs:range xsd:string ;
+                    rdfs:comment "Paren Process ID"@en ;
+                    rdfs:label "hasParentProcessID"@en ,
+                               "母流程编号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasPeanutStrawPercentage
+:hasPeanutStrawPercentage rdf:type owl:DatatypeProperty ;
+                          rdfs:subPropertyOf :hasFeedMaterialPercentage ;
+                          rdfs:domain :CombinedFeedRation ;
+                          rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasPeanutStrawQuantity
+:hasPeanutStrawQuantity rdf:type owl:DatatypeProperty ;
+                        rdfs:subPropertyOf :hasFeedMaterialQuantity ;
+                        rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasPercentage
+:hasPercentage rdf:type owl:DatatypeProperty ;
+               rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasProcessDescription
+:hasProcessDescription rdf:type owl:DatatypeProperty ;
+                       rdfs:subPropertyOf :hasName ;
+                       rdf:type owl:FunctionalProperty ;
+                       rdfs:domain :Process ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "Process Description"@en ;
+                       rdfs:label "hasProcessDescription"@en ,
+                                  "流程描述"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasProcessID
+:hasProcessID rdf:type owl:DatatypeProperty ;
+              rdfs:subPropertyOf :hasID ;
+              rdf:type owl:FunctionalProperty ;
+              rdfs:domain :Process ;
+              rdfs:range xsd:string ;
+              rdfs:comment "Process ID data property"@en ;
+              rdfs:label "hasProcessID"@en ,
+                         "流程编号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasProcessName
+:hasProcessName rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf :hasName ;
+                rdf:type owl:FunctionalProperty ;
+                rdfs:domain :Process ;
+                rdfs:range xsd:string ;
+                rdfs:comment "Process Name data property"@en ;
+                rdfs:label "hasProcessName"@en ,
+                           "流程名称"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasProducer
+:hasProducer rdf:type owl:DatatypeProperty .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasQuantity
+:hasQuantity rdf:type owl:DatatypeProperty .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSex
+:hasSex rdf:type owl:DatatypeProperty ,
+                 owl:FunctionalProperty ;
+        rdfs:domain :Sheep ;
+        rdfs:range xsd:string ;
+        rdfs:comment "Sex data property for Sheep"@en ;
+        rdfs:label "hasSex"@en ,
+                   "性别"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSheepBarnID
+:hasSheepBarnID rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf :hasID ;
+                rdf:type owl:FunctionalProperty ;
+                rdfs:domain :SheepBarn ;
+                rdfs:range xsd:string ;
+                rdfs:comment "hasSheepBarnID data property for SheepBarn"@en ;
+                rdfs:label "hasSheepBarnID"@en ,
+                           "栋舍号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSheepEartagID
+:hasSheepEartagID rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf :hasEartagID ,
+                                     :hasID ;
+                  rdfs:domain :Sheep ;
+                  rdfs:range xsd:string ;
+                  rdfs:comment "hasSheepEartagID data property for Sheep"@en ;
+                  rdfs:label "hasSheepEartagID"@en ,
+                             "耳号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSheepPenID
+:hasSheepPenID rdf:type owl:DatatypeProperty ;
+               rdfs:subPropertyOf :hasID ;
+               rdf:type owl:FunctionalProperty ;
+               rdfs:domain :SheepPen ;
+               rdfs:range xsd:string ;
+               rdfs:comment "SheepPen ID data property for SheepPen"@en ;
+               rdfs:label "hasSheepPenID"@en ,
+                          "栏位号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSheepfarmAddr
+:hasSheepfarmAddr rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf :hasAddress ;
+                  rdfs:domain :Sheepfarm ;
+                  rdfs:range xsd:string ;
+                  rdfs:comment "hasSheepfarmAddr data property for Sheepfarm"@en ;
+                  rdfs:label "hasSheepfarmAddr"@en ,
+                             "羊场地址"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSheepfarmDetailedAddr
+:hasSheepfarmDetailedAddr rdf:type owl:DatatypeProperty ;
+                          rdfs:subPropertyOf :hasAddress ;
+                          rdfs:domain :Sheepfarm ;
+                          rdfs:range xsd:string ;
+                          rdfs:comment "hasSheepfarmDetailedAddr data property for Sheepfarm"@en ;
+                          rdfs:label "hasSheepfarmDetailedAddr"@en ,
+                                     "羊场详细地址"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSheepfarmFullname
+:hasSheepfarmFullname rdf:type owl:DatatypeProperty ;
+                      rdfs:subPropertyOf :hasName ;
+                      rdfs:domain :Sheepfarm ;
+                      rdfs:range xsd:string ;
+                      rdfs:comment "hasSheepfarmFullname data property for Sheepfarm"@en ;
+                      rdfs:label "hasSheepfarmFullname"@en ,
+                                 "羊场全称"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSheepfarmID
+:hasSheepfarmID rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf :hasID ;
+                rdfs:domain :Sheepfarm ;
+                rdfs:range xsd:string ;
+                rdfs:comment "hasSheepfarmID data property"@en ;
+                rdfs:label "hasSheepfarmID"@en ,
+                           "羊场号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSheepfarmName
+:hasSheepfarmName rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf :hasName ;
+                  rdfs:domain :Sheepfarm ;
+                  rdfs:range xsd:string ;
+                  rdfs:comment "Sheepfarm Name data property for Sheepfarm"@en ,
+                               "hasSheepfarmName"@en ,
+                               "羊场简称"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSheepfarmStatus
+:hasSheepfarmStatus rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf :hasStatus ;
+                    rdf:type owl:FunctionalProperty ;
+                    rdfs:domain :Sheepfarm ;
+                    rdfs:range xsd:string ;
+                    rdfs:comment "hasSheepfarmStatus data property for Sheepfarm"@en ;
+                    rdfs:label "hasSheepfarmStatus"@en ,
+                               "羊场状态"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSilagePercentage
+:hasSilagePercentage rdf:type owl:DatatypeProperty ;
+                     rdfs:subPropertyOf :hasFeedMaterialPercentage ;
+                     rdfs:domain :CombinedFeedRation ;
+                     rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasSilageQuantity
+:hasSilageQuantity rdf:type owl:DatatypeProperty ;
+                   rdfs:subPropertyOf :hasFeedMaterialQuantity ;
+                   rdfs:range xsd:decimal .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/hasStatus
+:hasStatus rdf:type owl:DatatypeProperty ,
+                    owl:FunctionalProperty ;
+           rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/isEveryday
+:isEveryday rdf:type owl:DatatypeProperty ;
+            rdfs:range xsd:boolean .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/meetRequirements
+:meetRequirements rdf:type owl:DatatypeProperty ;
+                  rdfs:range xsd:boolean .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Additive
+:Additive rdf:type owl:Class ;
+          rdfs:subClassOf :Supply ;
+          rdfs:label "Additive"@en ,
+                     "添加料"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Alfalfa
+:Alfalfa rdf:type owl:Class ;
+         rdfs:subClassOf :IndividualFeedMaterial ;
+         rdfs:label "Alfalfa"@en ,
+                    "苜蓿"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Amount
+:Amount rdf:type owl:Class ;
+        rdfs:subClassOf :Supply ;
+        rdfs:label "Amount"@en ,
+                   "数量"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/AstragalusPolysaccharideInjection
+:AstragalusPolysaccharideInjection rdf:type owl:Class ;
+                                   rdfs:subClassOf :Medicine ;
+                                   rdfs:comment "A traditional Chinese medicine used to boost the immune system and treat a variety of conditions, including cancer, hepatitis, and respiratory infections."@en ;
+                                   rdfs:label "AstragalusPolysaccharideInjection"@en ,
+                                              "黄芪多糖注射液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/BakingSoda
+:BakingSoda rdf:type owl:Class ;
+            rdfs:subClassOf :Additive ;
+            rdfs:label "BakingSoda"@en ,
+                       "小苏打"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/BenzalkoniumChlorideSolution
+:BenzalkoniumChlorideSolution rdf:type owl:Class ;
+                              rdfs:subClassOf :Disinfectant ;
+                              rdfs:comment "A cationic surfactant with broad-spectrum bactericidal, virucidal, and fungicidal properties. I"@en ;
+                              rdfs:label "BenzalkoniumChlorideSolution"@en ,
+                                         "苯扎溴铵溶液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/BlisteringSymptom
+:BlisteringSymptom rdf:type owl:Class ;
+                   rdfs:subClassOf :Symptom ;
+                   rdfs:comment "Blistering on mouth and hooves"@en ;
+                   rdfs:label "BlisteringSymptom"@en ,
+                              "起泡"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Breeding
+:Breeding rdf:type owl:Class ;
+          rdfs:label "Breeding"@en ,
+                     "繁殖"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/BreedingEwe
+:BreedingEwe rdf:type owl:Class ;
+             rdfs:subClassOf :Ewe ;
+             rdfs:label "BreedingEwe"@en ,
+                        "种母羊"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/BreedingRam
+:BreedingRam rdf:type owl:Class ;
+             rdfs:subClassOf :Ram ;
+             rdfs:label "BreedingRam"@en ,
+                        "种公羊"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/CombinedFeedRation
+:CombinedFeedRation rdf:type owl:Class ;
+                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                          owl:onProperty :hasFeedMaterial ;
+                                          owl:someValuesFrom [ rdf:type owl:Class ;
+                                                               owl:unionOf ( :Additive
+                                                                             :IndividualFeedMaterial
+                                                                             :Supplement
+                                                                           )
+                                                             ]
+                                        ] ;
+                    rdfs:subClassOf :Feed ;
+                    rdfs:comment "A mixture of various feed materials formulated to meet the specific nutritional requirements of a particular animal species or group."@en ,
+                                 "由多种饲料原料混合而成，以满足特定动物种类或群体的特定营养需求。"@zh ;
+                    rdfs:label "CombinedFeedRation"@en ,
+                               "组合饲料日粮"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/CompoundPhenol
+:CompoundPhenol rdf:type owl:Class ;
+                rdfs:subClassOf :Disinfectant ;
+                rdfs:comment "A mixture of various phenolic compounds with broad-spectrum disinfectant properties."@en ;
+                rdfs:label "CompoundPhenol"@en ,
+                           "复合酚"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Concentrate
+:Concentrate rdf:type owl:Class ;
+             rdfs:subClassOf :IndividualFeedMaterial ;
+             rdfs:label "Concentrate"@en ,
+                        "精料"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/CornStraw
+:CornStraw rdf:type owl:Class ;
+           rdfs:subClassOf :IndividualFeedMaterial ;
+           rdfs:label "CornStraw"@en ,
+                      "玉米秸秆"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/DewormingMedication
+:DewormingMedication rdf:type owl:Class ;
+                     rdfs:subClassOf :Vaccine ;
+                     rdfs:comment "Medication that is used to kill parasites, such as worms, that live in the body."@en ;
+                     rdfs:label "DewormingMedication"@en ,
+                                "驱虫"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/DextranIron
+:DextranIron rdf:type owl:Class ;
+             rdfs:subClassOf :Medicine ;
+             rdfs:comment "An iron supplement used to treat iron deficiency anemia."@en ;
+             rdfs:label "DextranIron"@en ,
+                        "右旋糖酐铁"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Disease
+:Disease rdf:type owl:Class ;
+         rdfs:subClassOf :Health ;
+         rdfs:comment "Diseases"@en ;
+         rdfs:label "Disease"@en ,
+                    "疾病"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Disinfectant
+:Disinfectant rdf:type owl:Class ;
+              rdfs:subClassOf :Health ;
+              rdfs:comment "Disinfectant"@en ;
+              rdfs:label "Disinfectant"@en ,
+                         "消毒剂"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Empty
+:Empty rdf:type owl:Class ;
+       rdfs:subClassOf :ReproductiveStatus ;
+       rdfs:label "Empty"@en ,
+                  "空怀"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Event
+:Event rdf:type owl:Class ;
+       rdfs:label "Event"@en ,
+                  "事件"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/EventIntention
+:EventIntention rdf:type owl:Class ;
+                rdfs:subClassOf :Event ;
+                rdfs:label "EventIntention"@en ,
+                           "事件意图"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/EventObject
+:EventObject rdf:type owl:Class ;
+             rdfs:subClassOf :Event ;
+             rdfs:label "EventObject"@en ,
+                        "事件客体"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/EventSubject
+:EventSubject rdf:type owl:Class ;
+              rdfs:subClassOf :Event ;
+              rdfs:label "EventSubject"@en ,
+                         "事件主体"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/EventType
+:EventType rdf:type owl:Class ;
+           rdfs:subClassOf :Event ;
+           rdfs:label "EventType"@en ,
+                      "事件类型"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Ewe
+:Ewe rdf:type owl:Class ;
+     rdfs:subClassOf :Sheep ;
+     owl:disjointWith :Ram ;
+     rdfs:label "Ewe"@en ,
+                "母羊"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/FatigueSymptom
+:FatigueSymptom rdf:type owl:Class ;
+                rdfs:subClassOf :Symptom ;
+                rdfs:comment "Fatigue Symptom"@en ;
+                rdfs:label "FatigueSymptom"@en ,
+                           "疲劳"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Feed
+:Feed rdf:type owl:Class ;
+      rdfs:subClassOf :Supply ;
+      rdfs:label "Feed"@en ,
+                 "饲料"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Feeding
+:Feeding rdf:type owl:Class ;
+         dc:creator "raytan" ;
+         rdfs:label "Feeding"@en ,
+                    "饲养"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/FeedingSchedule
+:FeedingSchedule rdf:type owl:Class ;
+                 rdfs:subClassOf :Feeding ;
+                 rdfs:label "FeedingSchedule"@en ,
+                            "饲喂计划"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/FeverSymptom
+:FeverSymptom rdf:type owl:Class ;
+              rdfs:subClassOf :Symptom ;
+              rdfs:comment "Fever symptom"@en ;
+              rdfs:label "FeverSymptom"@en ,
+                         "发烧"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/FootAndMouthDiseaseVaccine
+:FootAndMouthDiseaseVaccine rdf:type owl:Class ;
+                            rdfs:subClassOf :Vaccine ;
+                            rdfs:comment "A vaccine that protects against foot-and-mouth disease, a highly contagious viral disease that affects cattle, sheep, and pigs."@en ;
+                            rdfs:label "FootAndMouthDiseaseVaccine"@en ,
+                                       "口蹄疫疫苗"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/GlutaraldehydeSolution
+:GlutaraldehydeSolution rdf:type owl:Class ;
+                        rdfs:subClassOf :Disinfectant ;
+                        rdfs:comment "A high-level disinfectant with broad-spectrum activity against bacteria, viruses, fungi, and spores."@en ;
+                        rdfs:label "GlutaraldehydeSolution"@en ,
+                                   "戊二醛溶液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Health
+:Health rdf:type owl:Class ;
+        rdfs:label "Health"@en ,
+                   "健康"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/IndividualFeedMaterial
+:IndividualFeedMaterial rdf:type owl:Class ;
+                        rdfs:subClassOf :Feed ;
+                        rdfs:comment "A single, unprocessed feedstuff such as corn straw, alfalfa, or wheat."@en ,
+                                     "未经加工的单一饲料，如玉米秸秆、苜蓿或小麦。"@zh ;
+                        rdfs:label "IndividualFeedMaterial"@en ,
+                                   "单一饲料原料"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/InjectableGonadotropin
+:InjectableGonadotropin rdf:type owl:Class ;
+                        rdfs:subClassOf :Medicine ;
+                        rdfs:comment "This is a hormonal drug used to stimulate reproductive function in animals. It is commonly used in sheep reproduction management to help control or synchronize estrus cycles."@en ;
+                        rdfs:label "InjectableGonadotropin"@en ,
+                                   "注射血促性素"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Instant
+:Instant rdf:type owl:Class ;
+         rdfs:subClassOf :Time ;
+         rdfs:label "Instant"@en ,
+                    "时间点"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Lactating
+:Lactating rdf:type owl:Class ;
+           rdfs:subClassOf :ReproductiveStatus ;
+           rdfs:label "Lactating"@en ,
+                      "哺乳"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Lambing
+:Lambing rdf:type owl:Class ;
+         rdfs:subClassOf :ReproductiveStatus ;
+         rdfs:label "Lambing"@en ,
+                    "生产"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/LamenessSymptom
+:LamenessSymptom rdf:type owl:Class ;
+                 rdfs:subClassOf :Symptom ;
+                 rdfs:comment "Lameness Symptom"@en ;
+                 rdfs:label "LamenessSymptom"@en ,
+                            "跛行"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/LethargySymptom
+:LethargySymptom rdf:type owl:Class ;
+                 rdfs:subClassOf :Symptom ;
+                 rdfs:comment "Lethargy behavior"@en ;
+                 rdfs:label "LethargySymptom"@en ,
+                            "嗜睡"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Location
+:Location rdf:type owl:Class ;
+          rdfs:comment "Location spacial"@en ;
+          rdfs:label "Location"@en ,
+                     "地点"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Medicine
+:Medicine rdf:type owl:Class ;
+          rdfs:subClassOf :Health ;
+          rdfs:label "Medicine"@en ,
+                     "药品"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/MoldInhibitor
+:MoldInhibitor rdf:type owl:Class ;
+               rdfs:subClassOf :Additive ;
+               rdfs:label "MoldInhibitor"@en ,
+                          "脱霉剂"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/OxytetracyclineInjection
+:OxytetracyclineInjection rdf:type owl:Class ;
+                          rdfs:subClassOf :Medicine ;
+                          rdfs:comment "A broad-spectrum antibiotic used to treat a variety of infections caused by bacteria."@en ;
+                          rdfs:label "OxytetracyclineInjection"@en ,
+                                     "土霉素注射液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PeanutStraw
+:PeanutStraw rdf:type owl:Class ;
+             rdfs:subClassOf :IndividualFeedMaterial ;
+             rdfs:label "PeanutStraw"@en ,
+                        "花生秧"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/People
+:People rdf:type owl:Class ;
+        rdfs:label "People"@en ,
+                   "人员"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PeraceticAcidSolution
+:PeraceticAcidSolution rdf:type owl:Class ;
+                       rdfs:subClassOf :Disinfectant ;
+                       rdfs:comment "A strong oxidizing agent with broad-spectrum bactericidal, virucidal, and fungicidal properties."@en ;
+                       rdfs:label "PeraceticAcidSolution"@en ,
+                                  "过氧乙酸溶液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PesteDesPetitsRuminantsVaccine
+:PesteDesPetitsRuminantsVaccine rdf:type owl:Class ;
+                                rdfs:subClassOf :Vaccine ;
+                                rdfs:comment "A vaccine that protects against peste des petits ruminants, a viral disease that affects sheep and goats."@en ;
+                                rdfs:label "PesteDesPetitsRuminantsVaccine"@en ,
+                                           "小反刍疫苗"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PneumoniaSymptom
+:PneumoniaSymptom rdf:type owl:Class ;
+                  rdfs:subClassOf :Symptom ;
+                  rdfs:comment "Pneumonia Symptom"@en ;
+                  rdfs:label "PneumoniaSymptom"@en ,
+                             "肺炎"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PneumoniaVaccine
+:PneumoniaVaccine rdf:type owl:Class ;
+                  rdfs:subClassOf :Vaccine ;
+                  rdfs:comment "A vaccine that protects against pneumonia, a lung infection that can be caused by bacteria or viruses."@en ;
+                  rdfs:label "PneumoniaVaccine"@en ,
+                             "肺炎苗"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Pregnant
+:Pregnant rdf:type owl:Class ;
+          rdfs:subClassOf :ReproductiveStatus ;
+          rdfs:label "Pregnant"@en ,
+                     "怀孕"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PregnantWithMultiples
+:PregnantWithMultiples rdf:type owl:Class ;
+                       rdfs:subClassOf :Pregnant ;
+                       rdfs:label "PregnantWithMultiples"@en ,
+                                  "怀孕多胎母羊"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Process
+:Process rdf:type owl:Class ;
+         rdfs:label "Process"@en ,
+                    "流程"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Ram
+:Ram rdf:type owl:Class ;
+     rdfs:subClassOf :Sheep ;
+     rdfs:label "Ram"@en ,
+                "公羊"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Ration1
+:Ration1 rdf:type owl:Class ;
+         rdfs:subClassOf :CombinedFeedRation ;
+         rdfs:label "Ration1"@en ,
+                    "组合饲料一号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Ration2
+:Ration2 rdf:type owl:Class ;
+         rdfs:subClassOf :CombinedFeedRation ;
+         rdfs:label "Ration2"@en ,
+                    "组合饲料二号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Ration3
+:Ration3 rdf:type owl:Class ;
+         rdfs:subClassOf :CombinedFeedRation ;
+         rdfs:label "Ration3"@en ,
+                    "组合饲料三号"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Rearing
+:Rearing rdf:type owl:Class ;
+         rdfs:subClassOf :ReproductiveStatus ;
+         rdfs:label "Rearing"@en ,
+                    "育成"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ReproductiveStatus
+:ReproductiveStatus rdf:type owl:Class ;
+                    rdfs:subClassOf :Breeding ;
+                    rdfs:comment "Reproductive Status"@en ;
+                    rdfs:label "ReproductiveStatus"@en ,
+                               "繁殖状态"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Rule
+:Rule rdf:type owl:Class ;
+      rdfs:label "Rule"@en ,
+                 "规则"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Schedule
+:Schedule rdf:type owl:Class ;
+          rdfs:subClassOf :Time .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Sheep
+:Sheep rdf:type owl:Class ;
+       rdfs:subClassOf [ rdf:type owl:Restriction ;
+                         owl:onProperty :hasLocation ;
+                         owl:someValuesFrom :Location
+                       ] ;
+       rdfs:label "Sheep"@en ,
+                  "羊只"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SheepBarn
+:SheepBarn rdf:type owl:Class ;
+           rdfs:subClassOf :Sheepfarm ;
+           rdfs:label "SheepBarn"@en ,
+                      "栋舍"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SheepCottonTampon
+:SheepCottonTampon rdf:type owl:Class ;
+                   rdfs:subClassOf :Medicine ;
+                   rdfs:comment "This product is specifically designed for sheep, possibly used for reproductive or gynecological purposes. It serves a similar function to human tampons but is tailored for animals."@en ;
+                   rdfs:label "SheepCottonTampon"@en ,
+                              "羊用棉栓"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SheepPen
+:SheepPen rdf:type owl:Class ;
+          rdfs:subClassOf :SheepBarn ;
+          rdfs:label "SheepPen"@en ,
+                     "羊栏"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SheepPoxVaccine
+:SheepPoxVaccine rdf:type owl:Class ;
+                 rdfs:subClassOf :Vaccine ;
+                 rdfs:comment "A vaccine that protects against sheep pox, a viral disease that affects sheep."@en ;
+                 rdfs:label "SheepPoxVaccine"@en ,
+                            "羊痘疫苗"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Sheepfarm
+:Sheepfarm rdf:type owl:Class ;
+           rdfs:subClassOf :Location ;
+           rdfs:label "Sheepfarm"@en ,
+                      "羊场"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Silage
+:Silage rdf:type owl:Class ;
+        rdfs:subClassOf :IndividualFeedMaterial ;
+        rdfs:label "Silage"@en ,
+                   "青储"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SodiumCloprostenol
+:SodiumCloprostenol rdf:type owl:Class ;
+                    rdfs:subClassOf :Medicine ;
+                    rdfs:comment "Sodium Cloprostenol is a synthetic prostaglandin analog with various veterinary uses, including inducing estrus, treating certain reproductive issues, and, in some cases, inducing abortion."@en ;
+                    rdfs:label "SodiumCloprostenol"@en ,
+                               "氯前列醇钠"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SodiumHydroxideFlakes
+:SodiumHydroxideFlakes rdf:type owl:Class ;
+                       rdfs:subClassOf :Disinfectant ;
+                       rdfs:comment "A strong alkali with caustic properties."@en ;
+                       rdfs:label "SodiumHydroxideFlakes"@en ,
+                                  "片状氢氧化钠"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SodiumSeleniteVitaminE
+:SodiumSeleniteVitaminE rdf:type owl:Class ;
+                        rdfs:subClassOf :Medicine ;
+                        rdfs:comment "A dietary supplement used to prevent selenium deficiency and treat a variety of conditions, including cardiovascular disease, cancer, and arthritis."@en ;
+                        rdfs:label "SodiumSeleniteVitaminE"@en ,
+                                   "亚硒酸钠维E"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Supplement
+:Supplement rdf:type owl:Class ;
+            rdfs:subClassOf :Supply ;
+            rdfs:label "Supplement"@en ,
+                       "保健品"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Supply
+:Supply rdf:type owl:Class ;
+        rdfs:label "Supply"@en ,
+                   "物资"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Symptom
+:Symptom rdf:type owl:Class ;
+         rdfs:subClassOf :Health ;
+         rdfs:comment "Symtom of sickness"@en ;
+         rdfs:label "Symptom"@en ,
+                    "症状"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Time
+:Time rdf:type owl:Class ;
+      rdfs:label "Time"@en ,
+                 "时间"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Treatment
+:Treatment rdf:type owl:Class ;
+           rdfs:subClassOf :Health ;
+           rdfs:comment "Treatment Protocol"@en ;
+           rdfs:label "Treatment"@en ,
+                      "治疗方法"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/TripleFourVaccine
+:TripleFourVaccine rdf:type owl:Class ;
+                   rdfs:subClassOf :Vaccine ;
+                   rdfs:comment "A vaccine that protects against three diseases: canine parvovirus, canine distemper, and infectious canine hepatitis. It also includes a component that helps prevent rabies."@en ;
+                   rdfs:label "TripleFourVaccine"@en ,
+                              "三联四防"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Vaccine
+:Vaccine rdf:type owl:Class ;
+         rdfs:subClassOf :Health ;
+         rdfs:comment "Vaccines"@en ;
+         rdfs:label "Vaccine"@en ,
+                    "疫苗"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Weaning
+:Weaning rdf:type owl:Class ;
+         rdfs:subClassOf :ReproductiveStatus ;
+         rdfs:label "Weaning"@en ,
+                    "断奶"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/WeightLossSymptom
+:WeightLossSymptom rdf:type owl:Class ;
+                   rdfs:subClassOf :Symptom ;
+                   rdfs:comment "Weight loss"@en ;
+                   rdfs:label "WeightLossSymptom"@en ,
+                              "体重下降"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/gAmount
+:gAmount rdf:type owl:Class ;
+         rdfs:subClassOf :Amount ;
+         rdfs:comment "Amount in gram"@en ;
+         rdfs:label "gAmount"@en ,
+                    "克拉"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/interval
+:interval rdf:type owl:Class ;
+          rdfs:subClassOf :Time ;
+          rdfs:label "Interval"@en ,
+                     "时间段"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/kgAmount
+:kgAmount rdf:type owl:Class ;
+          rdfs:subClassOf :Amount ;
+          rdfs:comment "Amount in kg"@en ;
+          rdfs:label "kgAmount"@en ,
+                     "公斤"@zh .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/AM1000Instance
+:AM1000Instance rdf:type owl:NamedIndividual ,
+                         :Instant .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/AcutePneumonia
+:AcutePneumonia rdf:type owl:NamedIndividual ,
+                         :PneumoniaSymptom ;
+                rdfs:comment "Rapid onset, severe respiratory distress, high fever"@en ,
+                             "发病快，呼吸困难严重，高热"@zh ;
+                rdfs:label "AcutePneumonia"@en ,
+                           "急性肺炎"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/AfternoonInstance
+:AfternoonInstance rdf:type owl:NamedIndividual ,
+                            :interval .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/AlfalfaInstance
+:AlfalfaInstance rdf:type owl:NamedIndividual ,
+                          :Alfalfa ;
+                 rdfs:label "AlfalfaInstance"@en ,
+                            "苜蓿"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Antibiotics
+:Antibiotics rdf:type owl:NamedIndividual ,
+                      :Treatment ;
+             rdfs:comment "Give antibiotics"@en ;
+             rdfs:label "Antibiotics"@en ,
+                        "抗生素"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/AstragalusPolysaccharideInjectionInstance
+:AstragalusPolysaccharideInjectionInstance rdf:type owl:NamedIndividual ,
+                                                    :AstragalusPolysaccharideInjection ;
+                                           :hasProducer "合肥爱瑞特生物制药有限公司"@zh ;
+                                           rdfs:label "AstragalusPolysaccharideInjectionInstance"@en ,
+                                                      "黄芪多糖注射液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/BakingSodaInstance
+:BakingSodaInstance rdf:type owl:NamedIndividual ,
+                             :BakingSoda ;
+                    rdfs:label "BakingSodaInstance"@en ,
+                               "小苏打"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/BenzalkoniumChlorideSolutionInstance
+:BenzalkoniumChlorideSolutionInstance rdf:type owl:NamedIndividual ,
+                                               :BenzalkoniumChlorideSolution ;
+                                      :hasProducer "广东万士达动物药业"@zh ;
+                                      rdfs:label "BenzalkoniumChlorideSolutionInstance"@en ,
+                                                 "苯扎溴铵溶液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Brucellosis
+:Brucellosis rdf:type owl:NamedIndividual ,
+                      :Disease ;
+             rdfs:comment "Highly contagious viral disease affecting sheep"@en ;
+             rdfs:label "Brucellosis"@en ,
+                        "布鲁氏菌病"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ChronicPneumonia
+:ChronicPneumonia rdf:type owl:NamedIndividual ,
+                           :PneumoniaSymptom ;
+                  rdfs:comment "Gradual onset, persistent cough, milder symptoms"@en ,
+                               "发病缓慢，咳嗽持续，症状较轻"@zh ;
+                  rdfs:label "ChronicPneumonia"@en ,
+                             "慢性肺炎"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/CompoundPhenolInstance
+:CompoundPhenolInstance rdf:type owl:NamedIndividual ,
+                                 :CompoundPhenol ;
+                        :hasProducer "广东万士达动物药业"@zh ;
+                        rdfs:label "CompoundPhenolInstance"@en ,
+                                   "复合酚"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ConcentrateInstance
+:ConcentrateInstance rdf:type owl:NamedIndividual ,
+                              :Concentrate ;
+                     rdfs:label "ConcentrateInstance"@en ,
+                                "精料"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/CornStrawInstance
+:CornStrawInstance rdf:type owl:NamedIndividual ,
+                            :CornStraw ;
+                   rdfs:label "CornStrawInstance"@en ,
+                              "玉米秸秆"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Days30Instance
+:Days30Instance rdf:type owl:NamedIndividual ,
+                         :interval .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Days7Instance
+:Days7Instance rdf:type owl:NamedIndividual ,
+                        :interval .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/DewormingMedicationInstance
+:DewormingMedicationInstance rdf:type owl:NamedIndividual ,
+                                      :DewormingMedication ;
+                             :hasProducer "哈尔滨绿达生动物药业有限公司"@zh ;
+                             rdfs:label "DewormingMedicationInstance"@en ,
+                                        "驱虫"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/DextranIronInstance
+:DextranIronInstance rdf:type owl:NamedIndividual ,
+                              :DextranIron ;
+                     :hasProducer "河北益华动物药业有限公司"@zh ;
+                     rdfs:label "DextranIronInstance"@en ,
+                                "右旋糖酐铁"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/EmptyEweInstance
+:EmptyEweInstance rdf:type owl:NamedIndividual ,
+                           :BreedingEwe ;
+                  :hasReproductiveStatus :EmptyInstance ;
+                  rdfs:label "Schedule"@en ,
+                             "时间表"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/EmptyInstance
+:EmptyInstance rdf:type owl:NamedIndividual ,
+                        :Empty .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/EveningInstance
+:EveningInstance rdf:type owl:NamedIndividual ,
+                          :interval .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ExtensiveBlistering
+:ExtensiveBlistering rdf:type owl:NamedIndividual ,
+                              :BlisteringSymptom ;
+                     rdfs:comment "Widespread blisters covering large areas of the body"@en ,
+                                  "大面积水疱覆盖身体大片区域"@zh ;
+                     rdfs:label "ExtensiveBlistering"@en ,
+                                "大面积水疱"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ExtremeFatigue
+:ExtremeFatigue rdf:type owl:NamedIndividual ,
+                         :FatigueSymptom ;
+                rdfs:comment "Complete exhaustion, inability to perform daily activities"@en ,
+                             "完全筋疲力尽，无法进行日常活动"@zh ;
+                rdfs:label "ExtremeFatigue"@en ,
+                           "极度疲劳"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/FootAndMouth
+:FootAndMouth rdf:type owl:NamedIndividual ,
+                       :Disease ;
+              rdfs:comment "Highly contagious viral disease affecting sheep"@en ;
+              rdfs:label "FootAndMouth"@en ,
+                         "口蹄疫"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/FootAndMouthDiseaseVaccineInstance
+:FootAndMouthDiseaseVaccineInstance rdf:type owl:NamedIndividual ,
+                                             :FootAndMouthDiseaseVaccine ;
+                                    :hasProducer "天康生物制药有限公司"@zh ;
+                                    rdfs:label "FootAndMouthInstance"@en ,
+                                               "口蹄疫"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/GlutaraldehydeSolutionInstance
+:GlutaraldehydeSolutionInstance rdf:type owl:NamedIndividual ,
+                                         :GlutaraldehydeSolution ;
+                                :hasProducer "哈尔滨绿达生动物药业"@zh ;
+                                rdfs:label "GlutaraldehydeSolutionInstance"@en ,
+                                           "戊二醛溶液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/HighFever
+:HighFever rdf:type owl:NamedIndividual ,
+                    :FeverSymptom ;
+           rdfs:comment "Temperature exceeding a specific threshold (e.g., >40°C)"@en ,
+                        "体温超过特定阈值（例如，> 40°C）"@zh ;
+           rdfs:label "HighFever"@en ,
+                      "高烧"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/InjectableGonadotropinInstance
+:InjectableGonadotropinInstance rdf:type owl:NamedIndividual ,
+                                         :InjectableGonadotropin ;
+                                :hasProducer "浙江宁波三生科技有限公司"@zh ;
+                                rdfs:label "InjectableGonadotropinInstance"@en ,
+                                           "注射血促性素"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/InterstitialPneumonia
+:InterstitialPneumonia rdf:type owl:NamedIndividual ,
+                                :PneumoniaSymptom ;
+                       rdfs:comment "Fluid accumulation in lung tissue, specific clinical signs"@en ,
+                                    "肺组织积液，特定临床症状"@zh ;
+                       rdfs:label "InterstitialPneumonia"@en ,
+                                  "间质性肺炎"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/LactatingEweInstance
+:LactatingEweInstance rdf:type owl:NamedIndividual ,
+                               :BreedingEwe ;
+                      :hasReproductiveStatus :LactatingInstance .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/LactatingInstance
+:LactatingInstance rdf:type owl:NamedIndividual ,
+                            :Lactating .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/LambingInstance
+:LambingInstance rdf:type owl:NamedIndividual ,
+                          :Lambing .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/LowFever
+:LowFever rdf:type owl:NamedIndividual ,
+                   :FeverSymptom ;
+          rdfs:comment "Temperature slightly above normal (e.g., 38-38.5°C)"@en ,
+                       "体温略高于正常值（例如，38-38.5°C）"@zh ;
+          rdfs:label "LowFever"@en ,
+                     "低烧"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/MildFatigue
+:MildFatigue rdf:type owl:NamedIndividual ,
+                      :FatigueSymptom ;
+             rdfs:comment "Slight tiredness, less playful or active than usual"@en ,
+                          "轻微疲倦，玩耍或活动频率低于平时"@zh ;
+             rdfs:label "MildFatigue"@en ,
+                        "轻度疲劳"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/MildLameness
+:MildLameness rdf:type owl:NamedIndividual ,
+                       :LamenessSymptom ;
+              rdfs:comment "Slight limping, subtle gait abnormalities"@en ,
+                           "轻微跛行，步态异常轻微"@zh ;
+              rdfs:label "MildLameness"@en ,
+                         "轻度跛行"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/MildLethargy
+:MildLethargy rdf:type owl:NamedIndividual ,
+                       :LethargySymptom ;
+              rdfs:comment "Slight tiredness, slower movements, less active than usual"@en ,
+                           "轻微疲倦，动作缓慢，活动低于平时"@zh ;
+              rdfs:label "MildLethargy"@en ,
+                         "轻度嗜睡"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/MinimalBlistering
+:MinimalBlistering rdf:type owl:NamedIndividual ,
+                            :BlisteringSymptom ;
+                   rdfs:comment "Few individual blisters scattered across the body"@en ,
+                                "少数水疱散布于全身"@zh ;
+                   rdfs:label "MinimalBlistering"@en ,
+                              "少量水疱"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/MinimalWeightLoss
+:MinimalWeightLoss rdf:type owl:NamedIndividual ,
+                            :WeightLossSymptom ;
+                   rdfs:comment "Minor fluctuations in weight, generally stable"@en ,
+                                "体重轻微波动减少，总体稳定"@zh ;
+                   rdfs:label "MinimalWeightLoss"@en ,
+                              "轻度体重减轻"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ModerateBlistering
+:ModerateBlistering rdf:type owl:NamedIndividual ,
+                             :BlisteringSymptom ;
+                    rdfs:comment "Localized blisters appearing in distinct patches"@en ,
+                                 "局部水疱出现在明显斑块中"@zh ;
+                    rdfs:label "ModerateBlistering"@en ,
+                               "中度水疱"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ModerateFatigue
+:ModerateFatigue rdf:type owl:NamedIndividual ,
+                          :FatigueSymptom ;
+                 rdfs:comment "Reduced energy levels, difficulty engaging in regular activities"@en ,
+                              "精力下降，难以进行日常活动"@zh ;
+                 rdfs:label "ModerateFatigue"@en ,
+                            "中度疲劳"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ModerateFever
+:ModerateFever rdf:type owl:NamedIndividual ,
+                        :FeverSymptom ;
+               rdfs:comment "Temperature within a moderate range (e.g., 39-40°C)"@en ,
+                            "体温处于中等范围（例如，39-40°C)"@zh ;
+               rdfs:label "ModerateFever"@en ,
+                          "中烧"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ModerateLameness
+:ModerateLameness rdf:type owl:NamedIndividual ,
+                           :LamenessSymptom ;
+                  rdfs:comment "Significant limping, difficulty bearing weight"@en ,
+                               "明显跛行，难以承受重量"@zh ;
+                  rdfs:label "ModerateLameness"@en ,
+                             "中度跛行"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ModerateLethargy
+:ModerateLethargy rdf:type owl:NamedIndividual ,
+                           :LethargySymptom ;
+                  rdfs:comment "Reduced activity, weakness, disinterest in feed/water"@en ,
+                               "活动减少，虚弱，对食物/水缺乏兴趣"@zh ;
+                  rdfs:label "ModerateLethargy"@en ,
+                             "中度嗜睡"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/ModerateWeightLoss
+:ModerateWeightLoss rdf:type owl:NamedIndividual ,
+                             :WeightLossSymptom ;
+                    rdfs:comment "Gradual weight loss over a longer period (e.g., monthly)"@en ,
+                                 "长期体重逐渐减轻（例如，每月）"@zh ;
+                    rdfs:label "ModerateWeightLoss"@en ,
+                               "中度体重减轻"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/MoldInhibitorInstance
+:MoldInhibitorInstance rdf:type owl:NamedIndividual ,
+                                :MoldInhibitor ;
+                       rdfs:label "MoldInhibitorInstance"@en ,
+                                  "脱霉剂"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/MorningInstance
+:MorningInstance rdf:type owl:NamedIndividual ,
+                          :interval .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/NightInstance
+:NightInstance rdf:type owl:NamedIndividual ,
+                        :interval .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/NoonInstance
+:NoonInstance rdf:type owl:NamedIndividual ,
+                       :Instant .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/OxytetracyclineInjectionInstance
+:OxytetracyclineInjectionInstance rdf:type owl:NamedIndividual ,
+                                           :OxytetracyclineInjection ;
+                                  :hasProducer "河北远征禾木药业有限公司"@zh ;
+                                  rdfs:label "OxytetracyclineInjectionInstance"@en ,
+                                             "土霉素注射液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PM0430Instance
+:PM0430Instance rdf:type owl:NamedIndividual ,
+                         :Instant .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PM0630Instance
+:PM0630Instance rdf:type owl:NamedIndividual ,
+                         :Instant .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PM1200Instance
+:PM1200Instance rdf:type owl:NamedIndividual ,
+                         :Instant .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PeanutStrawInstance
+:PeanutStrawInstance rdf:type owl:NamedIndividual ,
+                              :PeanutStraw ;
+                     rdfs:label "PeanutStrawInstance"@en ,
+                                "花生秧"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PeraceticAcidSolutionInstance
+:PeraceticAcidSolutionInstance rdf:type owl:NamedIndividual ,
+                                        :PeraceticAcidSolution ;
+                               :hasProducer "爱迪森生物科技有限公司"@zh ;
+                               rdfs:label "PeraceticAcidSolutionInstance"@en ,
+                                          "过氧乙酸溶液"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PesteDesPetitsRuminantsVaccineInstance
+:PesteDesPetitsRuminantsVaccineInstance rdf:type owl:NamedIndividual ,
+                                                 :PesteDesPetitsRuminantsVaccine ;
+                                        :hasProducer "天康生物制药有限公司"@zh ;
+                                        rdfs:label "PesteDesPetitsRuminantsVaccineInstance"@en ,
+                                                   "小反刍疫苗"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PneumoniaVaccineInstance
+:PneumoniaVaccineInstance rdf:type owl:NamedIndividual ,
+                                   :PneumoniaVaccine ;
+                          :hasProducer "重庆奥龙生物制品有限公司"@zh ;
+                          rdfs:label "PneumoniaVaccineInstance"@en ,
+                                     "肺炎苗"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PregnantEweInstance
+:PregnantEweInstance rdf:type owl:NamedIndividual ,
+                              :BreedingEwe ;
+                     :hasReproductiveStatus :PregnantInstance .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PregnantInstance
+:PregnantInstance rdf:type owl:NamedIndividual ,
+                           :Pregnant .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/PregnantWithMultiplesInstance
+:PregnantWithMultiplesInstance rdf:type owl:NamedIndividual ,
+                                        :PregnantWithMultiples .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/QFever
+:QFever rdf:type owl:NamedIndividual ,
+                 :Disease ;
+        rdfs:comment "Highly contagious viral disease affecting sheep"@en ;
+        rdfs:label "QFever"@en ,
+                   "Q热"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Quarantine
+:Quarantine rdf:type owl:NamedIndividual ,
+                     :Treatment ;
+            rdfs:comment "Quarantine"@en ;
+            rdfs:label "Quarantine"@en ,
+                       "隔离"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/RapidWeightLoss
+:RapidWeightLoss rdf:type owl:NamedIndividual ,
+                          :WeightLossSymptom ;
+                 rdfs:comment "Significant weight loss within a short timeframe (e.g., weekly)"@en ,
+                              "短时间内体重大量减少（例如，每周）"@zh ;
+                 rdfs:label "RapidWeightLoss"@en ,
+                            "快速体重减轻"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Ration1Instance
+:Ration1Instance rdf:type owl:NamedIndividual ,
+                          :Ration1 ;
+                 :hasBakingSodaPercentage 0.01 ;
+                 :hasConcentratePercentage 0.2 ;
+                 :hasCornStrawPercentage 0.25 ;
+                 :hasMoldInhibitorPercentage 0.03 ;
+                 :hasSilagePercentage 0.51 .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Ration2Instance
+:Ration2Instance rdf:type owl:NamedIndividual ,
+                          :Ration2 ;
+                 :hasAlfalfaPercentage 0.06 ;
+                 :hasBakingSodaPercentage 0.01 ;
+                 :hasConcentratePercentage 0.2 ;
+                 :hasCornStrawPercentage 0.2 ;
+                 :hasMoldInhibitorPercentage 0.003 ;
+                 :hasSilagePercentage 0.5 .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Ration3Instance
+:Ration3Instance rdf:type owl:NamedIndividual ,
+                          :Ration3 ;
+                 :hasBakingSodaPercentage 0.01 ;
+                 :hasConcentratePercentage 0.2 ;
+                 :hasCornStrawPercentage 0.2 ;
+                 :hasMoldInhibitorPercentage 0.003 ;
+                 :hasPeanutStrawPercentage 0.06 ;
+                 :hasSilagePercentage 0.5 .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/RearingEweInstance
+:RearingEweInstance rdf:type owl:NamedIndividual ,
+                             :BreedingEwe ;
+                    :hasReproductiveStatus :RearingInstance .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/RearingInstance
+:RearingInstance rdf:type owl:NamedIndividual ,
+                          :Rearing .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SevereLameness
+:SevereLameness rdf:type owl:NamedIndividual ,
+                         :LamenessSymptom ;
+                rdfs:comment "Inability to bear weight on a limb, complete limping"@en ,
+                             "无法承受肢体重量，完全跛行"@zh ;
+                rdfs:label "SevereLameness"@en ,
+                           "严重跛行"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SevereLethargy
+:SevereLethargy rdf:type owl:NamedIndividual ,
+                         :LethargySymptom ;
+                rdfs:comment "Inability to stand or move, unresponsive to stimuli"@en ,
+                             "无法站立或移动，对刺激无反应"@zh ;
+                rdfs:label "SevereLethargy"@en ,
+                           "严重嗜睡"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SheepCottonTamponInstance
+:SheepCottonTamponInstance rdf:type owl:NamedIndividual ,
+                                    :SheepCottonTampon ;
+                           :hasProducer "黑龙江科智瑞农畜牧应用技术研究院"@zh ;
+                           rdfs:label "SheepCottonTamponInstance"@en ,
+                                      "羊用棉栓"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SheepPox
+:SheepPox rdf:type owl:NamedIndividual ,
+                   :Disease ;
+          rdfs:comment "Highly contagious viral disease affecting sheep"@en ;
+          rdfs:label "SheepPox"@en ,
+                     "羊痘"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SheepPoxVaccineInstance
+:SheepPoxVaccineInstance rdf:type owl:NamedIndividual ,
+                                  :SheepPoxVaccine ;
+                         :hasProducer "华派生物工程集团有限公司"@zh ;
+                         rdfs:label "SheepPoxVaccineInstance"@en ,
+                                    "羊痘疫苗"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SilageInstance
+:SilageInstance rdf:type owl:NamedIndividual ,
+                         :Silage ;
+                rdfs:label "SilageInstance"@en ,
+                           "青储"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SodiumCloprostenolInstance
+:SodiumCloprostenolInstance rdf:type owl:NamedIndividual ,
+                                     :SodiumCloprostenol ;
+                            :hasProducer "浙江宁波三生科技有限公司"@zh ;
+                            rdfs:label "SodiumCloprostenolInstance"@en ,
+                                       "氯前列醇钠"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SodiumHydroxideFlakesInstance
+:SodiumHydroxideFlakesInstance rdf:type owl:NamedIndividual ,
+                                        :SodiumHydroxideFlakes ;
+                               :hasProducer "新疆中泰化学股份有限公司"@zh ;
+                               rdfs:label "SodiumHydroxideFlakesInstance"@en ,
+                                          "片状氢氧化钠"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/SodiumSeleniteVitaminEInstance
+:SodiumSeleniteVitaminEInstance rdf:type owl:NamedIndividual ,
+                                         :SodiumSeleniteVitaminE ;
+                                :hasProducer "芮城天通动保药业有限公司"@zh ;
+                                rdfs:label "SodiumSeleniteVitaminEInstance"@en ,
+                                           "亚硒酸钠维E"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/TripleFourVaccineInstance
+:TripleFourVaccineInstance rdf:type owl:NamedIndividual ,
+                                    :TripleFourVaccine ;
+                           :hasProducer "哈药集团生物疫苗有限公司"@zh ;
+                           rdfs:label "TripleFourVaccineInstance"@en ,
+                                      "三联四防"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/Vaccination
+:Vaccination rdf:type owl:NamedIndividual ,
+                      :Treatment ;
+             rdfs:comment "Give vaccine"@en ;
+             rdfs:label "Vaccination"@en ,
+                        "打疫苗"@zh .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/WeaningInstance
+:WeaningInstance rdf:type owl:NamedIndividual ,
+                          :Weaning .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/gAmountInstance
+:gAmountInstance rdf:type owl:NamedIndividual ,
+                          :gAmount .
+
+
+###  http://www.semanticweb.org/raytan/ontologies/2024/1/sheep-farming-onto/kgAmountInstance
+:kgAmountInstance rdf:type owl:NamedIndividual ,
+                           :kgAmount .
+
+
+[ :hasPercentage 0.51 ;
+  :IndividualFeedComponent :Silage
+] .
+
+[ :hasPercentage 0.2 ;
+   :IndividualFeedComponent :Concentrate
+ ] .
+
+[ :hasPercentage 25 ;
+   :IndividualFeedComponent :CornStraw
+ ] .
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:Restriction ;
+   owl:onProperty :contains ;
+   owl:someValuesFrom :SheepBarn ;
+   rdfs:subClassOf [ rdf:type owl:Restriction ;
+                     owl:onProperty :contains ;
+                     owl:someValuesFrom :Sheepfarm
+                   ]
+ ] .
+
+
+[ rdf:type owl:Restriction ;
+  owl:onProperty :inhabits ;
+  owl:someValuesFrom :SheepBarn ;
+  rdfs:subClassOf [ rdf:type owl:Restriction ;
+                    owl:onProperty :inhabits ;
+                    owl:someValuesFrom :Sheepfarm
+                  ]
+] .
+
+
+[ rdf:type owl:Restriction ;
+  owl:onProperty owl:topObjectProperty ;
+  owl:someValuesFrom :SheepBarn ;
+  rdfs:subClassOf [ rdf:type owl:Restriction ;
+                    owl:onProperty owl:topObjectProperty ;
+                    owl:someValuesFrom :Sheepfarm
+                  ]
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :AstragalusPolysaccharideInjection
+                :DextranIron
+                :InjectableGonadotropin
+                :OxytetracyclineInjection
+                :SheepCottonTampon
+                :SodiumCloprostenol
+                :SodiumSeleniteVitaminE
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :AstragalusPolysaccharideInjection
+                :DextranIron
+                :OxytetracyclineInjection
+                :SodiumSeleniteVitaminE
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :BenzalkoniumChlorideSolution
+                :CompoundPhenol
+                :GlutaraldehydeSolution
+                :PeraceticAcidSolution
+                :SodiumHydroxideFlakes
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Breeding
+                :Event
+                :Health
+                :People
+                :Process
+                :Rule
+                :Sheep
+                :Sheepfarm
+                :Supply
+                :Time
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :DewormingMedication
+                :FootAndMouthDiseaseVaccine
+                :PesteDesPetitsRuminantsVaccine
+                :PneumoniaVaccine
+                :SheepPoxVaccine
+                :TripleFourVaccine
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Empty
+                :Lactating
+                :Pregnant
+                :Rearing
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointProperties ;
+  owl:members ( :hasAddress
+                :hasID
+                :hasName
+                :hasSex
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointProperties ;
+  owl:members ( :hasAlfalfaQuantity
+                :hasBakingSodaQuantity
+                :hasConcentrateQuantity
+                :hasCornStrawQuantity
+                :hasMoldInhibitorQuantity
+                :hasPeanutStrawQuantity
+                :hasSilageQuantity
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointProperties ;
+  owl:members ( :hasEartagID
+                :hasProcessID
+                :hasSheepBarnID
+                :hasSheepPenID
+                :hasSheepfarmID
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointProperties ;
+  owl:members ( :hasProcessDescription
+                :hasProcessName
+                :hasSheepfarmFullname
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointProperties ;
+  owl:members ( :hasProcessDescription
+                :hasProcessName
+                :hasSheepfarmName
+              )
+] .
+
+
+#################################################################
+#    Rules
+#################################################################
+
+:ewe rdf:type swrl:Variable .
+
+:duration rdf:type swrl:Variable .
+
+:amount rdf:type swrl:Variable .
+
+:ration rdf:type swrl:Variable .
+
+:sheep rdf:type swrl:Variable .
+
+:time rdf:type swrl:Variable .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Top-dress Ewe with concentrate (母羊补料：测孕后30天怀孕羊开始补料(200g)一直补到生产，多胎母羊要比正常怀孕羊多补100-200g精料。)" ;
+   rdfs:label "Topdress-Ewe-with-Multiples" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :BreedingEwe ;
+                           swrl:argument1 :ewe
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isofType ;
+                                      swrl:argument1 :ewe ;
+                                      swrl:argument2 :PregnantWithMultiplesInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasDuration ;
+                                                 swrl:argument1 :duration ;
+                                                 swrl:argument2 :Days30Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                            swrl:propertyPredicate :topdressConcentrate ;
+                                                            swrl:argument1 :ewe ;
+                                                            swrl:argument2 :ConcentrateInstance
+                                                          ] ;
+                                                rdf:rest [ rdf:type swrl:AtomList ;
+                                                           rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                       swrl:propertyPredicate :hasFeedQuantityg ;
+                                                                       swrl:argument1 :amount ;
+                                                                       swrl:argument2 400
+                                                                     ] ;
+                                                           rdf:rest [ rdf:type swrl:AtomList ;
+                                                                      rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                                                  swrl:propertyPredicate :topdressUntil ;
+                                                                                  swrl:argument1 :ewe ;
+                                                                                  swrl:argument2 :LambingInstance
+                                                                                ] ;
+                                                                      rdf:rest rdf:nil
+                                                                    ]
+                                                         ]
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :meetRequirements ;
+                           swrl:argument1 :ewe ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Top-dress Ewe with concentrate (母羊补料：生产完7天以后，哺乳母羊开始补精料(200g)，补至断奶前。)" ;
+   rdfs:label "Topdress-Ewe-after-Lambing" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :BreedingEwe ;
+                           swrl:argument1 :ewe
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isofType ;
+                                      swrl:argument1 :ewe ;
+                                      swrl:argument2 :WeaningInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasDuration ;
+                                                 swrl:argument1 :duration ;
+                                                 swrl:argument2 :Days7Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                            swrl:propertyPredicate :topdressConcentrate ;
+                                                            swrl:argument1 :ewe ;
+                                                            swrl:argument2 :ConcentrateInstance
+                                                          ] ;
+                                                rdf:rest [ rdf:type swrl:AtomList ;
+                                                           rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                       swrl:propertyPredicate :hasFeedQuantityg ;
+                                                                       swrl:argument1 :amount ;
+                                                                       swrl:argument2 200
+                                                                     ] ;
+                                                           rdf:rest [ rdf:type swrl:AtomList ;
+                                                                      rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                                                  swrl:propertyPredicate :topdressUntil ;
+                                                                                  swrl:argument1 :ewe ;
+                                                                                  swrl:argument2 :WeaningInstance
+                                                                                ] ;
+                                                                      rdf:rest rdf:nil
+                                                                    ]
+                                                         ]
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :meetRequirements ;
+                           swrl:argument1 :ewe ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Define the composition of Feed: Ration2. (2号料：玉米秸秆20%、苜蓿6%、精料20%、青储50%、脱霉剂0.3%、小苏打1%）" ;
+   rdfs:label "Feed-Ration2(2号料成分)" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :CombinedFeedRation ;
+                           swrl:argument1 :ration
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                      swrl:propertyPredicate :hasCornStrawPercentage ;
+                                      swrl:argument1 :ration ;
+                                      swrl:argument2 0.2000000001
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                 swrl:propertyPredicate :hasAlfalfaPercentage ;
+                                                 swrl:argument1 :ration ;
+                                                 swrl:argument2 0.06
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                            swrl:propertyPredicate :hasConcentratePercentage ;
+                                                            swrl:argument1 :ration ;
+                                                            swrl:argument2 0.2
+                                                          ] ;
+                                                rdf:rest [ rdf:type swrl:AtomList ;
+                                                           rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                       swrl:propertyPredicate :hasSilagePercentage ;
+                                                                       swrl:argument1 :ration ;
+                                                                       swrl:argument2 0.5
+                                                                     ] ;
+                                                           rdf:rest [ rdf:type swrl:AtomList ;
+                                                                      rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                                  swrl:propertyPredicate :hasMoldInhibitorPercentage ;
+                                                                                  swrl:argument1 :ration ;
+                                                                                  swrl:argument2 0.003
+                                                                                ] ;
+                                                                      rdf:rest [ rdf:type swrl:AtomList ;
+                                                                                 rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                                             swrl:propertyPredicate :hasBakingSodaPercentage ;
+                                                                                             swrl:argument1 :ration ;
+                                                                                             swrl:argument2 0.01
+                                                                                           ] ;
+                                                                                 rdf:rest rdf:nil
+                                                                               ]
+                                                                    ]
+                                                         ]
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :meetRequirements ;
+                           swrl:argument1 :ration ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Define the composition of Feed: Ration3. (3号料：玉米秸秆20%、花生秧6%、精料20%、青储50%、脱霉剂0.3%、小苏打1%)" ;
+   rdfs:label "Feed-Ration3(3号料成分)" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :CombinedFeedRation ;
+                           swrl:argument1 :ration
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                      swrl:propertyPredicate :hasCornStrawPercentage ;
+                                      swrl:argument1 :ration ;
+                                      swrl:argument2 0.2000000001
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                 swrl:propertyPredicate :hasPeanutStrawPercentage ;
+                                                 swrl:argument1 :ration ;
+                                                 swrl:argument2 0.06
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                            swrl:propertyPredicate :hasConcentratePercentage ;
+                                                            swrl:argument1 :ration ;
+                                                            swrl:argument2 0.2
+                                                          ] ;
+                                                rdf:rest [ rdf:type swrl:AtomList ;
+                                                           rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                       swrl:propertyPredicate :hasSilagePercentage ;
+                                                                       swrl:argument1 :ration ;
+                                                                       swrl:argument2 0.5
+                                                                     ] ;
+                                                           rdf:rest [ rdf:type swrl:AtomList ;
+                                                                      rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                                  swrl:propertyPredicate :hasMoldInhibitorPercentage ;
+                                                                                  swrl:argument1 :ration ;
+                                                                                  swrl:argument2 0.003
+                                                                                ] ;
+                                                                      rdf:rest [ rdf:type swrl:AtomList ;
+                                                                                 rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                                             swrl:propertyPredicate :hasBakingSodaPercentage ;
+                                                                                             swrl:argument1 :ration ;
+                                                                                             swrl:argument2 0.01
+                                                                                           ] ;
+                                                                                 rdf:rest rdf:nil
+                                                                               ]
+                                                                    ]
+                                                         ]
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :meetRequirements ;
+                           swrl:argument1 :ration ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Define the composition of Feed: Ration1. (1号料：玉米秸秆25%、精料20%、青储51%、脱霉剂0.3%、小苏打1%)" ;
+   rdfs:label "Feed-Ration1(1号料成分)" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :CombinedFeedRation ;
+                           swrl:argument1 :ration
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                      swrl:propertyPredicate :hasCornStrawPercentage ;
+                                      swrl:argument1 :ration ;
+                                      swrl:argument2 0.25
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                 swrl:propertyPredicate :hasConcentratePercentage ;
+                                                 swrl:argument1 :ration ;
+                                                 swrl:argument2 0.20
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                            swrl:propertyPredicate :hasSilagePercentage ;
+                                                            swrl:argument1 :ration ;
+                                                            swrl:argument2 0.51
+                                                          ] ;
+                                                rdf:rest [ rdf:type swrl:AtomList ;
+                                                           rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                       swrl:propertyPredicate :hasMoldInhibitorPercentage ;
+                                                                       swrl:argument1 :ration ;
+                                                                       swrl:argument2 0.003
+                                                                     ] ;
+                                                           rdf:rest [ rdf:type swrl:AtomList ;
+                                                                      rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                                  swrl:propertyPredicate :hasBakingSodaPercentage ;
+                                                                                  swrl:argument1 :ration ;
+                                                                                  swrl:argument2 0.01
+                                                                                ] ;
+                                                                      rdf:rest rdf:nil
+                                                                    ]
+                                                         ]
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :meetRequirements ;
+                           swrl:argument1 :ration ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Feeding plan of Ration1 in the afternoon. (下午1号料每只羊吃1.25kg)" ;
+   rdfs:label "Feeding-Plan-Ration1-PM(1号料下午)" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :Sheep ;
+                           swrl:argument1 :sheep
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isAfternoon ;
+                                      swrl:argument1 :time ;
+                                      swrl:argument2 :AfternoonInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasFoodRation ;
+                                                 swrl:argument1 :ration ;
+                                                 swrl:argument2 :Ration1Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                            swrl:propertyPredicate :hasFeedQuantityKg ;
+                                                            swrl:argument1 :amount ;
+                                                            swrl:argument2 1.25
+                                                          ] ;
+                                                rdf:rest rdf:nil
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate :eats ;
+                           swrl:argument1 :sheep ;
+                           swrl:argument2 :time
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :eats ;
+                                      swrl:argument1 :sheep ;
+                                      swrl:argument2 :ration
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :eats ;
+                                                 swrl:argument1 :sheep ;
+                                                 swrl:argument2 :amount
+                                               ] ;
+                                     rdf:rest rdf:nil
+                                   ]
+                        ]
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Feeding plan of Ration1 in the morning. (上午1号料每只羊吃0.95kg)" ;
+   rdfs:label "Feeding-Plan-Ration1-AM(1号料上午)" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :Sheep ;
+                           swrl:argument1 :sheep
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isMorning ;
+                                      swrl:argument1 :time ;
+                                      swrl:argument2 :MorningInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasFoodRation ;
+                                                 swrl:argument1 :ration ;
+                                                 swrl:argument2 :Ration1Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                            swrl:propertyPredicate :hasFeedQuantityKg ;
+                                                            swrl:argument1 :amount ;
+                                                            swrl:argument2 0.95
+                                                          ] ;
+                                                rdf:rest rdf:nil
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate :eats ;
+                           swrl:argument1 :sheep ;
+                           swrl:argument2 :time
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :eats ;
+                                      swrl:argument1 :sheep ;
+                                      swrl:argument2 :ration
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :eats ;
+                                                 swrl:argument1 :sheep ;
+                                                 swrl:argument2 :amount
+                                               ] ;
+                                     rdf:rest rdf:nil
+                                   ]
+                        ]
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Feeding plan of Ration2 in the afternoon. (下午2号料每只羊吃1.25kg)" ;
+   rdfs:label "Feeding-Plan-Ration2-PM(2号料下午)" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :Sheep ;
+                           swrl:argument1 :sheep
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isAfternoon ;
+                                      swrl:argument1 :time ;
+                                      swrl:argument2 :AfternoonInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasFoodRation ;
+                                                 swrl:argument1 :ration ;
+                                                 swrl:argument2 :Ration2Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                            swrl:propertyPredicate :hasFeedQuantityKg ;
+                                                            swrl:argument1 :amount ;
+                                                            swrl:argument2 1.25
+                                                          ] ;
+                                                rdf:rest rdf:nil
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate :eats ;
+                           swrl:argument1 :sheep ;
+                           swrl:argument2 :time
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :eats ;
+                                      swrl:argument1 :sheep ;
+                                      swrl:argument2 :ration
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :eats ;
+                                                 swrl:argument1 :sheep ;
+                                                 swrl:argument2 :amount
+                                               ] ;
+                                     rdf:rest rdf:nil
+                                   ]
+                        ]
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Feeding plan of Ration2 in the morning. (上午2号料每只羊吃0.95kg)" ;
+   rdfs:label "Feeding-Plan-Ration2-AM(2号料上午)" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :Sheep ;
+                           swrl:argument1 :sheep
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isMorning ;
+                                      swrl:argument1 :time ;
+                                      swrl:argument2 :MorningInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasFoodRation ;
+                                                 swrl:argument1 :ration ;
+                                                 swrl:argument2 :Ration2Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                            swrl:propertyPredicate :hasFeedQuantityKg ;
+                                                            swrl:argument1 :amount ;
+                                                            swrl:argument2 0.95
+                                                          ] ;
+                                                rdf:rest rdf:nil
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate :eats ;
+                           swrl:argument1 :sheep ;
+                           swrl:argument2 :time
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :eats ;
+                                      swrl:argument1 :sheep ;
+                                      swrl:argument2 :ration
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :eats ;
+                                                 swrl:argument1 :sheep ;
+                                                 swrl:argument2 :amount
+                                               ] ;
+                                     rdf:rest rdf:nil
+                                   ]
+                        ]
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Feeding plan of Ration3 in the morning. (下午1号料每只羊吃0.85kg)" ;
+   rdfs:label "Feeding-Plan-Ration3-PM(3号料下午)" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :Sheep ;
+                           swrl:argument1 :sheep
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isAfternoon ;
+                                      swrl:argument1 :time ;
+                                      swrl:argument2 :AfternoonInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasFoodRation ;
+                                                 swrl:argument1 :ration ;
+                                                 swrl:argument2 :Ration3Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                            swrl:propertyPredicate :hasFeedQuantityKg ;
+                                                            swrl:argument1 :amount ;
+                                                            swrl:argument2 0.85
+                                                          ] ;
+                                                rdf:rest rdf:nil
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate :eats ;
+                           swrl:argument1 :sheep ;
+                           swrl:argument2 :time
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :eats ;
+                                      swrl:argument1 :sheep ;
+                                      swrl:argument2 :ration
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :eats ;
+                                                 swrl:argument1 :sheep ;
+                                                 swrl:argument2 :amount
+                                               ] ;
+                                     rdf:rest rdf:nil
+                                   ]
+                        ]
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Feeding plan of Ration3 in the morning. (上午3号料每只羊吃0.7kg)" ;
+   rdfs:label "Feeding-Plan-Ration3-AM(3号料上午)" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :Sheep ;
+                           swrl:argument1 :sheep
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isMorning ;
+                                      swrl:argument1 :time ;
+                                      swrl:argument2 :MorningInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasFoodRation ;
+                                                 swrl:argument1 :ration ;
+                                                 swrl:argument2 :Ration3Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                            swrl:propertyPredicate :hasFeedQuantityKg ;
+                                                            swrl:argument1 :amount ;
+                                                            swrl:argument2 0.7
+                                                          ] ;
+                                                rdf:rest rdf:nil
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate :eats ;
+                           swrl:argument1 :sheep ;
+                           swrl:argument2 :time
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :eats ;
+                                      swrl:argument1 :sheep ;
+                                      swrl:argument2 :ration
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :eats ;
+                                                 swrl:argument1 :sheep ;
+                                                 swrl:argument2 :amount
+                                               ] ;
+                                     rdf:rest rdf:nil
+                                   ]
+                        ]
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Empty Breeding Ewe eats Ration1" ;
+   rdfs:label "Sheep-to-Ration1" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :Sheep ;
+                           swrl:argument1 :sheep
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isofType ;
+                                      swrl:argument1 :sheep ;
+                                      swrl:argument2 :EmptyEweInstance
+                                    ] ;
+                          rdf:rest rdf:nil
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate :eats ;
+                           swrl:argument1 :sheep ;
+                           swrl:argument2 :Ration1Instance
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Pregnant and Lactating Breeding Ewe eats Ration2" ;
+   rdfs:label "Sheep-to-Ration2" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :Sheep ;
+                           swrl:argument1 :sheep
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isofType ;
+                                      swrl:argument1 :sheep ;
+                                      swrl:argument2 :PregnantEweInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :isofType ;
+                                                 swrl:argument1 :sheep ;
+                                                 swrl:argument2 :LactatingEweInstance
+                                               ] ;
+                                     rdf:rest rdf:nil
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate :eats ;
+                           swrl:argument1 :sheep ;
+                           swrl:argument2 :Ration2Instance
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Rearing Breeding Ewe eats Ration3" ;
+   rdfs:label "Sheep-to-Ration3" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :Sheep ;
+                           swrl:argument1 :sheep
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isofType ;
+                                      swrl:argument1 :sheep ;
+                                      swrl:argument2 :RearingEweInstance
+                                    ] ;
+                          rdf:rest rdf:nil
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate :eats ;
+                           swrl:argument1 :sheep ;
+                           swrl:argument2 :Ration3Instance
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Feeding schedule for morning. (饲喂方案：每天上午上班10点开始撒料，12点之前撒完.)" ;
+   rdfs:label "Feeding-Schedule-AM" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :isEveryday ;
+                           swrl:argument1 :time ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isMorning ;
+                                      swrl:argument1 :time ;
+                                      swrl:argument2 :MorningInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasBeginTime ;
+                                                 swrl:argument1 :time ;
+                                                 swrl:argument2 :AM1000Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                            swrl:propertyPredicate :hasEndTime ;
+                                                            swrl:argument1 :time ;
+                                                            swrl:argument2 :PM1200Instance
+                                                          ] ;
+                                                rdf:rest rdf:nil
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :meetRequirements ;
+                           swrl:argument1 :time ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Feeding schedule for afternoon. (饲喂方案：每天下午4点半开始撒料，6点半前撒完。)" ;
+   rdfs:label "Feeding-Schedule-PM" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :isEveryday ;
+                           swrl:argument1 :time ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isAfternoon ;
+                                      swrl:argument1 :time ;
+                                      swrl:argument2 :AfternoonInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasBeginTime ;
+                                                 swrl:argument1 :time ;
+                                                 swrl:argument2 :PM0430Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                            swrl:propertyPredicate :hasEndTime ;
+                                                            swrl:argument1 :time ;
+                                                            swrl:argument2 :PM0630Instance
+                                                          ] ;
+                                                rdf:rest rdf:nil
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :meetRequirements ;
+                           swrl:argument1 :time ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ swrla:isRuleEnabled "true"^^xsd:boolean ;
+   rdfs:comment "Top-dress Ewe with concentrate (母羊补料：测孕后30天怀孕羊开始补料(200g)一直补到生产)" ;
+   rdfs:label "Topdress-Ewe-Pregnant" ;
+   rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate :BreedingEwe ;
+                           swrl:argument1 :ewe
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate :isofType ;
+                                      swrl:argument1 :ewe ;
+                                      swrl:argument2 :PregnantEweInstance
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate :hasDuration ;
+                                                 swrl:argument1 :duration ;
+                                                 swrl:argument2 :Days30Instance
+                                               ] ;
+                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                            swrl:propertyPredicate :topdressConcentrate ;
+                                                            swrl:argument1 :ewe ;
+                                                            swrl:argument2 :ConcentrateInstance
+                                                          ] ;
+                                                rdf:rest [ rdf:type swrl:AtomList ;
+                                                           rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                                       swrl:propertyPredicate :hasFeedQuantityg ;
+                                                                       swrl:argument1 :amount ;
+                                                                       swrl:argument2 200
+                                                                     ] ;
+                                                           rdf:rest [ rdf:type swrl:AtomList ;
+                                                                      rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                                                  swrl:propertyPredicate :topdressUntil ;
+                                                                                  swrl:argument1 :ewe ;
+                                                                                  swrl:argument2 :LambingInstance
+                                                                                ] ;
+                                                                      rdf:rest rdf:nil
+                                                                    ]
+                                                         ]
+                                              ]
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                           swrl:propertyPredicate :meetRequirements ;
+                           swrl:argument1 :ewe ;
+                           swrl:argument2 1
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+###  Generated by the OWL API (version 4.5.26.2023-07-17T20:34:13Z) https://github.com/owlcs/owlapi
